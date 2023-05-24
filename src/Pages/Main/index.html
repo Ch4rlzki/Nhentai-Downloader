@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Nhentai Downloader by Charlzk</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link href="./main.css" rel="stylesheet">
+</head>
+<body>
+    <div id="main" class="p-5 hideMain" style="z-index: 1;">
+        <div class="p-5 rounded shadow-lg d-none" id="downloadingDisplay">
+            <p class="text-center">Downloading: Please don't exit or restart the software.</p>
+            <div class="d-flex justify-content-center">
+                <video class="h-50 w-50 rounded shadow-sm" autoplay loop>
+                    <source src="./Resources/Downloading.mp4">
+                </video>
+            </div>
+        </div>
+        <div id="mainContent" class="noBlurMainContent">
+            <div class="p-5 rounded shadow-lg mt-2">
+                <p class="display-6">Nhentai Downloader</p>
+                <p class="m-0" style="font-size: 12px;" id="downloadPathText">Download path: None</p>
+                <div class="row flex-wrap g-2 mt-1">
+                    <div class="form-floating col-lg">
+                        <input type="text" class="form-control is-invalid" id="linkInput" placeholder="https://nhentai.net/g/404272/">
+                        <label for="linkInput">Nhentai Link</label>
+                    </div>
+                    <div class="col-sm">
+                        <button class="btn btn-success btn-md w-100 h-100" id="dpButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-folder2" viewBox="0 0 16 16">
+                                <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 12.5v-9zM2.5 3a.5.5 0 0 0-.5.5V6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5zM14 7H2v5.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-2 flex-wrap g-2">
+                    <button class="btn btn-outline-danger btn-sm px-3" id="downloadButton" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-outline-success btn-sm" onclick="window.electronAPI.openCookies()">Cookies</button>
+                    <button class="btn btn-outline-success btn-sm" onclick="window.electronAPI.openHeaders()">Headers</button>
+                </div>
+            </div>
+            <div class="p-5 rounded shadow-lg mt-2">
+                <p class="display-6">How to use</p>
+                <ol>
+                    <li>First of all, set your cookies.</li>
+                    <li>Paste the Nhentai link on the Nhentai link input. The link should be only from nhentai.net</li>
+                    <li>Choose your download path on the folder button.</li>
+                </ol>
+                <p class="fw-bold">How to get your cookies</p>
+                <ol>
+                    <li>Go to your application tab in the developer tools.</li>
+                    <li>Go to cookies and click on the "nhentai.net" url.</li>
+                    <li>And copy the "csrftoken" and "cf_clearance" value.</li>
+                    <img src="./Resources/Cookies.png" class="img-fluid w-50 mt-2 rounded shadow-lg">
+                </ol>
+                <p class="fw-bold">How to prevent errors</p>
+                <ul>
+                    <li>Don't exit or restart the software while it's downloading the manga.</li>
+                    <li>Don't modify any files from the downloader folder aside from "cookies.json" and "headers.json".</li>
+                </ul>
+                <p class="display-6">Developed by Charlzk</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <video id="backgroundVideo" class="introPlay" autoplay muted>
+            <source src="./Resources/Intro.mp4">
+        </video>
+    </div>
+
+    <script src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</html>

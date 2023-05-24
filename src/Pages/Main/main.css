@@ -1,0 +1,57 @@
+body {
+    background-color: #1b0f16;
+}
+.introPlay {
+    object-fit: cover; 
+    width: 100vw; 
+    height: 100vh; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: -100; 
+    display: block;
+    filter: blur(0px);
+    transition: filter 2s;
+}
+.introStop {
+    object-fit: cover; 
+    width: 100vw; 
+    height: 100vh; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: -100; 
+    display: block;
+    filter: blur(10px);
+    transition: filter 2s;
+}
+.introPlay {
+    object-fit: cover; 
+    width: 100vw; 
+    height: 100vh; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: -100; 
+    display: block;
+    filter: blur(0px);
+    transition: filter 2s;
+}
+.hideMain {
+    opacity: 0;
+    filter: blur(10px);
+    transition: all 2s;
+}
+.showMain {
+    opacity: 1;
+    filter: blur(0px);
+    transition: all 2s;
+}
+.blurMainContent {
+    filter: blur(5px);
+    transition: all 2s;
+}
+.noBlurMainContent {
+    filter: blur(0px);
+    transition: all 2s;
+}
