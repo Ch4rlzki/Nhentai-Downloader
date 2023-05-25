@@ -1,7 +1,7 @@
 # Nhentai Downloader
 Free Nhentai Manga, Doujinshi and Comics downloader software.
 
-# [Download Link](Test)
+# [Download Links](https://github.com/Ch4rlzki/Nhentai-Downloader/releases)
 
 # How to use
 1. First of all, set your [cookies](https://github.com/Ch4rlzki/Nhentai-Downloader/tree/master#how-to-get-your-cookies) and [headers](https://github.com/Ch4rlzki/Nhentai-Downloader/tree/master#how-to-get-your-headers).
