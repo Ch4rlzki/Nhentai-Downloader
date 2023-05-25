@@ -9,7 +9,7 @@
     <link href="./main.css" rel="stylesheet">
 </head>
 <body>
-    <div id="main" class="p-5 showMain" style="z-index: 1;">
+    <div id="main" class="p-5 hideMain" style="z-index: 1;">
         <div class="p-5 rounded shadow-lg d-none" id="downloadingDisplay">
             <p class="text-center">Downloading, Please don't exit or restart the software.</p>
             <div class="d-flex justify-content-center">
@@ -58,18 +58,18 @@
             <div class="p-5 rounded shadow-lg mt-2">
                 <h6>How to use</h6>
                 <ol>
-                    <li>First of all, set your cookies.</li>
+                    <li>First of all, set your <a class="link-primary" onclick="document.getElementById('howToGetYourCookies').scrollIntoView()">cookies</a> and <a class="link-primary" onclick="document.getElementById('howToGetYourHeaders').scrollIntoView()">headers</a>.</li>
                     <li>Paste the Nhentai link on the Nhentai link input. The link should be only from nhentai.net</li>
                     <li>Choose your download path on the folder button.</li>
                 </ol>
-                <h6>How to get your cookies</h6>
+                <h6 id="howToGetYourCookies">How to get your cookies</h6>
                 <ol>
                     <li>Go to your application tab in the developer tools.</li>
                     <li>Go to cookies and select the "nhentai.net" url.</li>
                     <li>And copy the "csrftoken" and "cf_clearance" value.</li>
                     <img src="./Resources/Cookies.png" class="img-fluid w-50 mt-2 rounded shadow-lg">
                 </ol>
-                <h6>How to get your headers</h6>
+                <h6 id="howToGetYourHeaders">How to get your headers</h6>
                 <ol>
                     <li>Go to <a class="link-primary" onclick="window.electronAPI.openLink('https://useragentstring.com')">https://useragentstring.com</a></li>
                     <li>And copy the user agent string inside the box.</li>
