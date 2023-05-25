@@ -1,8 +1,10 @@
 # Nhentai Downloader
 Free Nhentai Manga, Doujinshi and Comics downloader software.
 
+# [Download Link](Test)
+
 # How to use
-1. First of all, set your cookies and [headers](#How to get your headers).
+1. First of all, set your [cookies](https://github.com/Ch4rlzki/Nhentai-Downloader/tree/master#how-to-get-your-cookies) and [headers](https://github.com/Ch4rlzki/Nhentai-Downloader/tree/master#how-to-get-your-headers).
 2. Paste the Nhentai link on the Nhentai link input. The link should be only from nhentai.net
 3. Choose your download path on the folder button.
 
@@ -19,4 +21,7 @@ Free Nhentai Manga, Doujinshi and Comics downloader software.
 
 ![Headers](https://github.com/Ch4rlzki/Nhentai-Downloader/assets/133903363/2b438f04-4a1b-4305-95a9-6ea4ba1e8ae9)
 
-# How to get your 
+# How to prevent errors
+- Don't exit or restart the software while it's downloading the manga.
+- Don't modify any files from the downloader folder aside from "cookies.json" and "headers.json".
+- Headers and Cookies should be from the same web browser or else it will never work.
