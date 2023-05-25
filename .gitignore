@@ -1,6 +1,7 @@
 python/build
 python/dist
 ./python/downloader.spec
+./package-lock.json
 
 # Logs
 logs

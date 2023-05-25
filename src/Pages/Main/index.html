@@ -9,9 +9,9 @@
     <link href="./main.css" rel="stylesheet">
 </head>
 <body>
-    <div id="main" class="p-5 hideMain" style="z-index: 1;">
+    <div id="main" class="p-5 showMain" style="z-index: 1;">
         <div class="p-5 rounded shadow-lg d-none" id="downloadingDisplay">
-            <p class="text-center">Downloading: Please don't exit or restart the software.</p>
+            <p class="text-center">Downloading, Please don't exit or restart the software.</p>
             <div class="d-flex justify-content-center">
                 <video class="h-50 w-50 rounded shadow-sm" autoplay loop>
                     <source src="./Resources/Downloading.mp4">
@@ -42,28 +42,44 @@
                             <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
                         </svg>
                     </button>
-                    <button class="btn btn-outline-success btn-sm" onclick="window.electronAPI.openCookies()">Cookies</button>
-                    <button class="btn btn-outline-success btn-sm" onclick="window.electronAPI.openHeaders()">Headers</button>
+                    <button class="btn btn-outline-warning btn-sm" onclick="window.electronAPI.openCookies()">Edit Cookies</button>
+                    <button class="btn btn-outline-warning btn-sm" onclick="window.electronAPI.openHeaders()">Edit Headers</button>
+                    <button class="btn btn-outline-warning btn-sm" onclick="window.electronAPI.testRequest()">Test Cookies and Headers</button>
+                </div>
+                <div class="mt-2 p-2 shadow-lg rounded">
+                    <p class="fw-bold text-danger m-0">Danger</p>
+                    <div class="flex-wrap g-2 mt-2">
+                        <button class="btn btn-outline-danger btn-sm" onclick="window.electronAPI.clearCookies()">Clear Cookies Only</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="window.electronAPI.clearHeaders()">Clear Headers Only</button>
+                        <button class="btn btn-outline-danger btn-sm" onclick="window.electronAPI.clearCookiesNHeaders()">Clear Cookies and Headers</button>
+                    </div>
                 </div>
             </div>
             <div class="p-5 rounded shadow-lg mt-2">
-                <p class="display-6">How to use</p>
+                <h6>How to use</h6>
                 <ol>
                     <li>First of all, set your cookies.</li>
                     <li>Paste the Nhentai link on the Nhentai link input. The link should be only from nhentai.net</li>
                     <li>Choose your download path on the folder button.</li>
                 </ol>
-                <p class="fw-bold">How to get your cookies</p>
+                <h6>How to get your cookies</h6>
                 <ol>
                     <li>Go to your application tab in the developer tools.</li>
-                    <li>Go to cookies and click on the "nhentai.net" url.</li>
+                    <li>Go to cookies and select the "nhentai.net" url.</li>
                     <li>And copy the "csrftoken" and "cf_clearance" value.</li>
                     <img src="./Resources/Cookies.png" class="img-fluid w-50 mt-2 rounded shadow-lg">
                 </ol>
-                <p class="fw-bold">How to prevent errors</p>
+                <h6>How to get your headers</h6>
+                <ol>
+                    <li>Go to <a class="link-primary" onclick="window.electronAPI.openLink('https://useragentstring.com')">https://useragentstring.com</a></li>
+                    <li>And copy the user agent string inside the box.</li>
+                    <img src="./Resources/Headers.png" class="img-fluid w-50 mt-2 rounded shadow-lg">
+                </ol>
+                <h6>How to prevent errors</h6>
                 <ul>
                     <li>Don't exit or restart the software while it's downloading the manga.</li>
                     <li>Don't modify any files from the downloader folder aside from "cookies.json" and "headers.json".</li>
+                    <li>Headers and Cookies should be from the same web browser or else it will never work.</li>
                 </ul>
                 <p class="display-6">Developed by Charlzk</p>
             </div>

@@ -1,7 +1,8 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 const path = require('path');
 const fs = require("fs");
 const childProcess = require("child_process");
+const axios = require("axios").default;
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -13,12 +14,44 @@ const createWindow = () => {
     height: 600,
     minWidth: 800,
     minHeight: 500,
+    title: "Nhentai Downloader by Charlzk",
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
 
   mainWindow.loadFile(path.join(__dirname, "Pages", "Main", "index.html"));
+
+  const cookiesJson = path.join(__dirname, "Downloader", "config", "cookies.json");
+  const headersJson = path.join(__dirname, "Downloader", "config", "headers.json");
+
+  var cookies;
+  var headers;
+
+  fs.readFile(cookiesJson, { encoding: "utf-8" }, (err, data) => {
+    if (err) {
+      return dialog.showErrorBox("Error", err.message);
+    }
+  
+    const jsons = JSON.parse(data);
+  
+    cookies = {
+      "csrftoken": jsons["csrftoken"],
+      "cf_clearance": jsons["cf_clearance"]
+    };
+  });
+
+  fs.readFile(headersJson, { encoding: "utf-8" }, (err, data) => {
+    if (err) {
+      return dialog.showErrorBox("Error", err.message);
+    }
+  
+    const jsons = JSON.parse(data);
+  
+    headers = {
+      "user-agent": jsons["user-agent"]
+    };
+  });
 
   fs.readFile(path.join(__dirname, "Downloader", "config", "cookies.json"), { encoding: "utf-8" }, (err, data) => {
     if (err) { 
@@ -27,7 +60,7 @@ const createWindow = () => {
     const jsons = JSON.parse(data);
 
     if (jsons["csrftoken"] === "" || jsons["cf_clearance"] === "") {
-      return dialog.showMessageBox({
+      dialog.showMessageBox({
         type: "question",
         title: "Empty cookies",
         message: "Would you like to set your cookies?",
@@ -42,11 +75,47 @@ const createWindow = () => {
               return dialog.showErrorBox("Error", err.message);
             }
           });
-        } else {
-          app.quit();
+          childProcess.exec(`"${path.join(__dirname, "How to get your cookies.pdf")}"`, (err) => {
+            if (err) {
+              return dialog.showErrorBox("Error", err.message);
+            }
+          });
         }
       });
     }
+    
+    fs.readFile(headersJson, { encoding: "utf-8" }, (err, data) => {
+      if (err) {
+        return dialog.showErrorBox("Error", err.message);
+      }
+  
+      const jsons = JSON.parse(data);
+  
+      if (jsons["user-agent"] === "") {
+        dialog.showMessageBox({
+          type: "question",
+          title: "Empty headers",
+          message: "Would you like to set your headers?",
+          buttons: [
+            "yes",
+            "no"
+          ]
+        }).then((result) => {
+          if (result.response === 0) {
+            childProcess.exec(`"${path.join(__dirname, "Downloader", "config", "headers.json")}"`, (err) => {
+              if (err) {
+                return dialog.showErrorBox("Error", err.message);
+              }
+            });
+            childProcess.exec(`"${path.join(__dirname, "How to get your headers.pdf")}"`, (err) => {
+              if (err) {
+                return dialog.showErrorBox("Error", err.message);
+              }
+            });
+          }
+        });
+      }
+    });
   });
 
   ipcMain.on("open-cookies", (event) => {
@@ -79,7 +148,9 @@ const createWindow = () => {
         return dialog.showErrorBox("Error", err.message);
       }
 
-      dialog.showErrorBox("Error", data);
+      if (!data === "") {
+        dialog.showErrorBox("Error", data);
+      }
     });
   });
 
@@ -95,7 +166,7 @@ const createWindow = () => {
         mainWindow.webContents.send("downloading");
         console.log("Downloading!");
       } else if (data === "false") {
-        mainWindow.webContents.send("notDownloading");
+        mainWindow.webContents.send("not-downloading");
         console.log("Not downloading!");
       }
     });
@@ -110,9 +181,31 @@ const createWindow = () => {
   const downloadPathTxt = path.join(__dirname, "Downloader", "config", "download_path.txt");
 
   ipcMain.on("download-manga", (event, url) => {
+    fs.readFile(path.join(__dirname, "Downloader", "config", "cookies.json"), { encoding: "utf-8" }, (err, data) => {
+      if (err) {
+        return dialog.showErrorBox("Error", err.message);
+      }
+      const jsons = JSON.parse(data);
+
+      if (jsons["csrftoken"] === "" || jsons["cf_clearance"] === "") {
+        return dialog.showErrorBox("Error", "No cookies were given");
+      }
+    });
+
+    fs.readFile(path.join(__dirname, "Downloader", "config", "headers.json"), { encoding: "utf-8" }, (err, data) => {
+      if (err) {
+        return dialog.showErrorBox("Error", err.message);
+      }
+      const jsons = JSON.parse(data);
+
+      if (jsons["user-agent"] === "") {
+        return dialog.showErrorBox("Error", "No headers were given");
+      }
+    });
+
     fs.writeFile(path.join(__dirname, "Downloader", "config", "url.txt"), url, { encoding: "utf-8" }, (err) => {
       if (err) {
-        return console.log(err.message);
+        return dialog.showErrorBox("Error", err.message);
       }
     });
 
@@ -163,6 +256,49 @@ const createWindow = () => {
     });
   });
 
+  fs.watchFile(cookiesJson, (curr, prev) => {
+    fs.readFile(cookiesJson, { encoding: "utf-8" }, (err, data) => {
+      if (err) {
+        return dialog.showErrorBox("Error", err.message);
+      }
+    
+      const jsons = JSON.parse(data);
+    
+      cookies = {
+        "csrftoken": jsons["csrftoken"],
+        "cf_clearance": jsons["cf_clearance"]
+      };
+
+      console.log("Cookies.json has been edited");
+      dialog.showMessageBox({
+        type: "info",
+        title: "Cookies.json",
+        message: "Cookies.json has been edited"
+      });
+    });
+  });
+
+  fs.watchFile(headersJson, (curr, prev) => {
+    fs.readFile(headersJson, { encoding: "utf-8" }, (err, data) => {
+      if (err) {
+        return dialog.showErrorBox("Error", err.message);
+      }
+    
+      const jsons = JSON.parse(data);
+    
+      headers = {
+        "user-agent": jsons["user-agent"]
+      };
+
+      console.log("Headers.json has been edited");
+      dialog.showMessageBox({
+        type: "info",
+        title: "Headers.json",
+        message: "Headers.json has been edited"
+      });
+    });
+  });
+
   fs.writeFile(downloadPathTxt, "None", { encoding: "utf-8" }, (err) => {
     if (err) {
       return dialog.showErrorBox("Error", err.message);
@@ -173,6 +309,117 @@ const createWindow = () => {
     if (err) {
       return dialog.showErrorBox("Error", err.message);
     }
+  });
+
+  ipcMain.on("test-request", (event) => {
+    if (cookies["csrftoken"] === "" || cookies["cf_clearance"] === "") {
+      return dialog.showErrorBox("Error", "No cookies were given");
+    } else if (headers["user-agent"] === "") {
+      return dialog.showErrorBox("Error", "No headers were given");
+    }
+
+    axios({
+      method: "get",
+      url: "https://nhentai.net/",
+      headers: {
+        Cookie: `csrftoken=${cookies["csrftoken"]}; cf_clearance=${cookies["cf_clearance"]}`,
+        "User-Agent": headers["user-agent"]
+      }
+    }).then((res) => {
+      if (res.status === 200) {
+        return dialog.showMessageBox({
+          type: "info",
+          title: "Test Result",
+          message: "Working! Status Code: 200"
+        });
+      } else {
+        return dialog.showMessageBox({
+          type: "info",
+          title: "Test Result",
+          message: `Working! Status Code: ${res.status}`
+        });
+      }
+    }).catch((err) => {
+      return dialog.showErrorBox("Error", err.message);
+    });
+  });
+
+  ipcMain.on("open-link", (event, link) => {
+    shell.openExternal(link);
+  });
+
+  function clearCookies() {
+    const clearedCookies = {
+      "csrftoken": "",
+      "cf_clearance": ""
+    };
+
+    fs.writeFile(cookiesJson, JSON.stringify(clearedCookies, null, 4), { encoding: "utf-8" }, (err) => {
+      if (err) {
+        return dialog.showErrorBox("Error", err.message);
+      }
+    });
+  }
+
+  function clearHeaders() {
+    const clearedHeaders = {
+      "user-agent": ""
+    };
+
+    fs.writeFile(headersJson, JSON.stringify(clearedHeaders, null, 4), { encoding: "utf-8" }, (err) => {
+      if (err) {
+        return dialog.showErrorBox("Error", err.message);
+      }
+    });
+  }
+
+  ipcMain.on("clear-cookies", (event) => {
+    return dialog.showMessageBox({
+      type: "warning",
+      title: "Clear cookies",
+      message: "Are you sure you want to clear your cookies?",
+      buttons: [
+        "yes",
+        "no"
+      ]
+    }).then((result) => {
+      if (result.response === 0) {
+        clearCookies();
+      }
+    });
+  });
+
+  ipcMain.on("clear-headers", (event) => {
+    return dialog.showMessageBox({
+      type: "warning",
+      title: "Clear headers",
+      message: "Are you sure you want to clear your headers?",
+      buttons: [
+        "yes",
+        "no"
+      ]
+    }).then((result) => {
+      if (result.response === 0) {
+        clearHeaders();
+      }
+    });
+  });
+
+  ipcMain.on("clear-cookiesnheaders", (event) => {
+    return dialog.showMessageBox({
+      type: "warning",
+      title: "Clear cookies and headers",
+      message: "Are you sure you want to clear your cookies and headers?",
+      buttons: [
+        "yes",
+        "no"
+      ]
+    }).then((result) => {
+      if (result.response === 0) {
+        clearCookies();
+        clearHeaders();
+      }
+    });
   });
 };
 

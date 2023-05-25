@@ -7,5 +7,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   downloadPath: (path) => ipcRenderer.on('downloadPath', path),
   downloadManga: (url) => ipcRenderer.send('download-manga', url),
   downloading: (callback) => ipcRenderer.on('downloading', callback),
-  notDownloading: (callback) => ipcRenderer.on('notDownloading', callback),
+  notDownloading: (callback) => ipcRenderer.on('not-downloading', callback),
+  testRequest: () => ipcRenderer.send('test-request'),
+  openLink: (link) => ipcRenderer.send('open-link', link),
+  clearCookies: () => ipcRenderer.send('clear-cookies'),
+  clearHeaders: () => ipcRenderer.send('clear-headers'),
+  clearCookiesNHeaders: () => ipcRenderer.send('clear-cookiesnheaders'),
 });

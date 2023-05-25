@@ -9,30 +9,13 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\"",
-    "build": "electron-builder"
-  },
-  "build": {
-    "appId": "nhentai-downloader",
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "icon.ico"
-    },
-    "nsis": {
-      "oneClick": true,
-      "installerIcon": "icon.ico",
-      "uninstallerIcon": "icon.ico",
-      "uninstallerDisplayName": "Synapse X Remake Uninstaller",
-      "license": "license.md",
-      "allowToChangeInstallationDirectory": false
-    }
+    "lint": "echo \"No linting configured\""
   },
   "keywords": [],
   "author": "Owner",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.4.0",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
